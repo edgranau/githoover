@@ -17,6 +17,7 @@ mkdir "$SOURCE_ORG"
 pushd "$SOURCE_ORG"
 
 LAST_PAGE=$(curl -I -f -s "https://$TOKEN:@api.github.com/orgs/$SOURCE_ORG/repos?per_page=100" | grep ^Link | sed -E 's/.*page=([0-9]+)>; rel="last"/\1/g' | sed -E 's/[^a-zA-Z0-9]//g')
+LAST_PAGE=$((LAST_PAGE||1))
 for PAGE in {1..$(seq $LAST_PAGE)}; do
     curl -f -s "https://$TOKEN:@api.github.com/orgs/$SOURCE_ORG/repos?per_page=100&page=$PAGE" | jq '.[].ssh_url, .[].name+"/.git"' | xargs -n 2 git clone -q --mirror
 done
