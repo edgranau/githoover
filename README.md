@@ -30,3 +30,13 @@ You need to have access to both repositories and create an access token for your
 ```shell
 bash githoover.sh
 ```
+
+## Note
+
+If your repos have pull requests made to them, you will see errors like this:
+
+```txt
+ ! [remote rejected] refs/pull/1/head -> refs/pull/1/head (deny updating a hidden ref)
+```
+
+See [this](https://stackoverflow.com/questions/34265266/remote-rejected-errors-after-mirroring-a-git-repository) for more information.
