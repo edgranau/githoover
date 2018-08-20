@@ -36,7 +36,15 @@ bash githoover.sh
 If your repos have pull requests made to them, you will see errors like this:
 
 ```txt
- ! [remote rejected] refs/pull/1/head -> refs/pull/1/head (deny updating a hidden ref)
+! [remote rejected] refs/pull/1/head -> refs/pull/1/head (deny updating a hidden ref)
 ```
 
 See [this](https://stackoverflow.com/questions/34265266/remote-rejected-errors-after-mirroring-a-git-repository) for more information.
+
+## References
+
+- [caniszczyk/clone-all-twitter-github-repos.sh](https://gist.github.com/caniszczyk/3856584)
+- [GitHub REST API (Orgs)](https://developer.github.com/v3/orgs/)
+- [Traversing with Pagination](https://developer.github.com/v3/guides/traversing-with-pagination/)
+- [Understanding scopes for OAuth Apps](https://developer.github.com/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/)
+- [ShellCheck](https://www.shellcheck.net/)
