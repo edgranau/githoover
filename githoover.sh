@@ -12,6 +12,8 @@ echo "Enter TOKEN: "
 read -r TOKEN
 echo "Enter Repo Prefix (eg: oldorg): "
 read -r PREFIX
+echo "Enter Team Name (eg: all-devs): "
+read -r TEAM_NAME
 
 mkdir "$SOURCE_ORG"
 pushd "$SOURCE_ORG"
@@ -24,6 +26,7 @@ done
 
 SKIPPED=0
 MIGRATED=0
+TEAM_ID=$(curl -f -s -H 'Accept: application/vnd.github.inertia-preview+json' "https://$TOKEN:@api.github.com/orgs/$TARGET_ORG/teams?per_page=100" | jq --arg TEAM_NAME $TEAM_NAME '.[] | select(.name == $TEAM_NAME) | .id')
 
 for d in */ ; do
     echo "$d"
@@ -45,7 +48,7 @@ for d in */ ; do
         fi
         echo "=>$NEW_NAME"
         # create new repo in target_org and use returned ssh_url to update remote in local copy of repo
-        curl -f -s -H 'content-type: application/json' -d "{ \"name\": \"$NEW_NAME\", \"private\": true }" "https://$TOKEN:@api.github.com/orgs/$TARGET_ORG/repos" | jq ".ssh_url" | xargs -n 1 git remote set-url origin
+        curl -f -s -H 'content-type: application/json' -d "{ \"name\": \"$NEW_NAME\", \"private\": true, \"team_id\": \"$TEAM_ID\" }" "https://$TOKEN:@api.github.com/orgs/$TARGET_ORG/repos" | jq ".ssh_url" | xargs -n 1 git remote set-url origin
         git push --mirror -u -q origin
         MIGRATED=$((MIGRATED + 1))
     fi
